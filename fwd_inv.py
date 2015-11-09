@@ -41,7 +41,7 @@ hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 #                              spacing="oct6",
 #                              subjects_dir=subjects_dir,
 #                              n_jobs=2)
-src = mne.read_source_spaces(data_path + "nrm-src-oct6.fif")
+src = mne.read_source_spaces(data_path + "nrm-oct6-src.fif")
 
 # fwd_nrm = mne.make_forward_solution(nrm_fname, trans=None,
 #                                     src=src,
