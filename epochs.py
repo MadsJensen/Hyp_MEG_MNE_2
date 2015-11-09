@@ -13,13 +13,13 @@ import os
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
-    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE/"
+    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
     raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
     raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "scratch/Tone_task_MNE/"
+                "scratch/Tone_task_MNE_ver_2/"
     raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
     raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
