@@ -82,6 +82,8 @@ for condition in conditions:
 #    evoked.save("tone_task_%s-ave.fif" % (condition))
     exec("epochs_%s = epochs" % (condition))
 
+epochs_normal.save("subj_1-nrm-epo.fif")
+epochs_hyp.save("subj_1-hyp-epo.fif")
 
 # layout = mne.find_layout(epochs.info, 'meg')  # use full layout
 
