@@ -14,8 +14,10 @@ import os
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
-    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
-    subjects_dir = "/home/mje/mnt/Hyp_meg/scratch/fs_subjects_dir"
+#    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
+#    subjects_dir = "/home/mje/mnt/Hyp_meg/scratch/fs_subjects_dir"
+    data_path = "/home/mje/Projects/MEG_Hyopnosis/data/"
+    subjects_dir = "/home/mje/Projects/MEG_Hyopnosis/data/fs_subjects_dir"
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
@@ -31,8 +33,8 @@ os.chdir(data_path)
 raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
-bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
-                            "subject_1-5120-5120-5120-bem-sol.fif")
+#bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
+#                            "subject_1-5120-5120-5120-bem-sol.fif")
 nrm_fname = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
@@ -41,7 +43,7 @@ hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 #                              spacing="oct6",
 #                              subjects_dir=subjects_dir,
 #                              n_jobs=2)
-src = mne.read_source_spaces(data_path + "nrm-oct6-src.fif")
+src = mne.read_source_spaces(data_path + "subj_1-oct6-src.fif")
 
 # fwd_nrm = mne.make_forward_solution(nrm_fname, trans=None,
 #                                     src=src,
@@ -72,7 +74,7 @@ reject = dict(grad=4000e-13,  # T / m (gradiometers)
 tmin, tmax = -1, 2
 
 # SELECT EVENTS TO EXTRACT EPOCHS FROM.
-event_id = {'tone': 1}
+event_id = {'tone': 8}
 
 # Setup for reading the raw data
 events_nrm = mne.find_events(raw_nrm)
