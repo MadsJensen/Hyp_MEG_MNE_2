@@ -20,13 +20,13 @@ n_jobs = 1
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
-    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
+    basic_path = "/home/mje/mnt/Hyp_meg/scratch/"
 else:
-    data_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" +\
-                "scratch/Tone_task_MNE_ver_2/"
+    basic_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" +\
+                "scratch/"
 
-subjects_dir = data_path + "fs_subjects_dir/"
-
+subjects_dir = basic_path + "fs_subjects_dir/"
+data_path = basic_path + "Tone_task_MNE_ver_2/"
 
 epochs_fnrm = data_path + "subj_1-nrm-epo.fif"
 epochs_fhyp = data_path + "subj_1-hyp-epo.fif"
@@ -40,7 +40,7 @@ reject = dict(grad=4000e-13,  # T / m (gradiometers)
               #  eog=250e-6  # uV (EOG channels)
               )
 
-# %%
+#
 snr = 1.0  # Standard assumption for average data but using it for single trial
 lambda2 = 1.0 / snr ** 2
 method = "MNE"
@@ -56,7 +56,7 @@ epochs_nrm = epochs_nrm["Tone"]
 epochs_hyp = epochs_hyp["Tone"]
 
 
-# %%
+#
 stcs_nrm = apply_inverse_epochs(epochs_nrm, inverse_nrm, lambda2,
                                 method, pick_ori="normal",
                                 return_generator=False)
