@@ -12,19 +12,20 @@ import socket
 from mne.minimum_norm import (apply_inverse_epochs, read_inverse_operator)
 from mne.baseline import rescale
 
+
+# Settings
+n_jobs = 1
+
 # Setup paths and prepare raw data
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
     data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
-    subjects_dir = "/home/mje/mnt/Hyp_meg/scratch/fs_subjects_dir/"
-    n_jobs = 1
 else:
-    data_path = "/scratch1/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
+    data_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
                 "Tone_task_MNE_ver_2/"
-    subjects_dir = "/scratch1/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                   "fs_subjects_dir"
-    n_jobs = 4
+
+subjects_dir = data_path + "fs_subjects_dir/"
 
 
 epochs_fnrm = data_path + "subj_1-nrm-epo.fif"
@@ -95,7 +96,7 @@ for j in range(len(label_ts_nrm)):
 label_ts_hyp_rescaled = []
 for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled += [rescale(label_ts_hyp[j], epochs_hyp.times,
-                                       baseline=(None, -0.7), mode="zscore")]
+                                      baseline=(None, -0.7), mode="zscore")]
 
 
 fromTime = np.argmax(stcs_nrm[0].times == -0.5)
