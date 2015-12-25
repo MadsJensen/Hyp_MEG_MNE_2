@@ -22,8 +22,8 @@ hostname = socket.gethostname()
 if hostname == "Wintermute":
     data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
 else:
-    data_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "Tone_task_MNE_ver_2/"
+    data_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" +\
+                "scratch/Tone_task_MNE_ver_2/"
 
 subjects_dir = data_path + "fs_subjects_dir/"
 
