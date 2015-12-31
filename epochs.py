@@ -13,15 +13,21 @@ import os
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
-    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
-    raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
-    raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
+    data_path = "/home/mje/Projects/MEG_Hyopnosis/data/"
+    subjects_dir = "/home/mje/Projects/MEG_Hyopnosis/data/fs_subjects_dir"
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "scratch/Tone_task_MNE_ver_2/"
-    raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
-    raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
+                "scratch/Tone_task_MNE_2/"
+    subjects_dir = "/projects/" + \
+                   "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
+                   "scratch/fs_subjects_dir/"
+
+
+raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
+raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
+raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
+raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
 # change dir to save files the rigth place
 os.chdir(data_path)
@@ -82,8 +88,8 @@ for condition in conditions:
 #    evoked.save("tone_task_%s-ave.fif" % (condition))
     exec("epochs_%s = epochs" % (condition))
 
-epochs_normal.save("subj_1-nrm-epo.fif")
-epochs_hyp.save("subj_1-hyp-epo.fif")
+epochs_normal.save("subj_1_nrm-epo.fif")
+epochs_hyp.save("subj_1_hyp-epo.fif")
 
 # layout = mne.find_layout(epochs.info, 'meg')  # use full layout
 
