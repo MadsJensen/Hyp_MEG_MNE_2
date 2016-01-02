@@ -14,8 +14,6 @@ import os
 hostname = socket.gethostname()
 
 if hostname == "Wintermute":
-#    data_path = "/home/mje/mnt/Hyp_meg/scratch/Tone_task_MNE_ver_2/"
-#    subjects_dir = "/home/mje/mnt/Hyp_meg/scratch/fs_subjects_dir"
     data_path = "/home/mje/Projects/MEG_Hyopnosis/data/"
     subjects_dir = "/home/mje/Projects/MEG_Hyopnosis/data/fs_subjects_dir"
 else:
@@ -30,13 +28,13 @@ else:
 os.chdir(data_path)
 
 
-raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
-raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
-
-#bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
-#                            "subject_1-5120-5120-5120-bem-sol.fif")
+bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
+                           "subject_1-5120-bem-sol.fif")
 nrm_fname = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
+
+nrm_trans = data_path + "nrm-trans.fif"
+hyp_trans = data_path + "tone_hyp-trans.fif"
 
 # src = mne.setup_source_space("subject_1",
 #                              "nrm-src-oct6.fif",
@@ -45,19 +43,23 @@ hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 #                              n_jobs=2)
 src = mne.read_source_spaces(data_path + "subj_1-oct6-src.fif")
 
-# fwd_nrm = mne.make_forward_solution(nrm_fname, trans=None,
-#                                     src=src,
-#                                     bem=bem,
-#                                     meg=True,
-#                                     eeg=False,
-#                                     fname="subj_1-nrm-fwd.fif")
+fwd_nrm = mne.make_forward_solution(nrm_fname,
+                                    trans=nrm_trans,
+                                    src=src,
+                                    bem=bem,
+                                    meg=True,
+                                    eeg=False,
+                                    fname="subj_1-nrm-fwd.fif",
+                                    overwrite=True)
 
-# fwd_hyp = mne.make_forward_solution(hyp_fname, trans=None,
-#                                     src=src,
-#                                     bem=bem,
-#                                     meg=True,
-#                                     eeg=False,
-#                                     fname="subj_1-hyp-fwd.fif")
+fwd_hyp = mne.make_forward_solution(hyp_fname,
+                                    trans=hyp_trans,
+                                    src=src,
+                                    bem=bem,
+                                    meg=True,
+                                    eeg=False,
+                                    fname="subj_1-hyp-fwd.fif",
+                                    overwrite=True)
 
 fwd_nrm = mne.read_forward_solution("subj_1-nrm-fwd.fif")
 fwd_hyp = mne.read_forward_solution("subj_1-hyp-fwd.fif")
@@ -93,15 +95,11 @@ epochs_hyp = mne.Epochs(raw_hyp, events_hyp, event_id, tmin, tmax, picks=picks,
                         preload=True)
 
 cov_nrm = mne.compute_covariance(epochs_nrm, tmin=None, tmax=-0.5,
-                                 method="auto")
+                                 method="auto", return_estimators="all")
 cov_hyp = mne.compute_covariance(epochs_hyp, tmin=None, tmax=-0.5,
-                                 method="auto")
-
+                                 method="auto", return_estimators="all")
 cov_nrm.save("subj_1-nrm-cov.fif")
 cov_hyp.save("subj_1-hyp-cov.fif")
-
-
-# REGULARIZE NOISE COVARIANCE
 
 inv_nrm = make_inverse_operator(epochs_nrm.info, fwd_nrm, cov_nrm,
                                 loose=0.2, depth=0.8)
