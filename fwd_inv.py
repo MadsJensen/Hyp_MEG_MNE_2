@@ -32,8 +32,8 @@ bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
 nrm_fname = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
-nrm_trans = data_path + "nrm-trans.fif"
-hyp_trans = data_path + "tone_hyp-trans.fif"
+nrm_trans = data_path + "nrm2-trans.fif"
+hyp_trans = data_path + "hyp2-trans.fif"
 
 # src = mne.setup_source_space("subject_1",
 #                              "nrm-src-oct6.fif",
@@ -94,9 +94,9 @@ epochs_hyp = mne.Epochs(raw_hyp, events_hyp, event_id, tmin, tmax, picks=picks,
                         preload=True)
 
 cov_nrm = mne.compute_covariance(epochs_nrm, tmin=None, tmax=-0.5,
-                                 method="auto", return_estimators="all")
+                                 method="shrunk")
 cov_hyp = mne.compute_covariance(epochs_hyp, tmin=None, tmax=-0.5,
-                                 method="auto", return_estimators="all")
+                                 method="shrunk")
 cov_nrm.save("subj_1-nrm-cov.fif")
 cov_hyp.save("subj_1-hyp-cov.fif")
 
