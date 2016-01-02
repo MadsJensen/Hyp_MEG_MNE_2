@@ -18,6 +18,7 @@ print(__doc__)
 
 # Settings
 n_jobs = 1
+plt.ion()  # make plt interactive
 
 # Setup paths and prepare raw data
 hostname = socket.gethostname()
@@ -39,7 +40,8 @@ raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 raw_fnormal = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 raw_fhyp = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
-trans_fname = data_path + "nrm-trans.fif"
+trans_nrm = data_path + "tone-trans.fif"
+trans_hyp = data_path + "tone_hyp-trans.fif"
 bem_fname = subjects_dir + "/subject_1/bem/" +\
                            "subject_1-5120-bem-sol.fif"
 
@@ -82,16 +84,16 @@ epochs_hyp = epochs_hyp["Tone"]
 src = mne.read_source_spaces(data_path + "subj_1-oct6-src.fif")
 
 # Load labels
-labels = mne.read_labels_from_annot('subject_1', parc='PALS_B12_Brodmann',
-                                    regexp="Brodmann",
+labels = mne.read_labels_from_annot('subject_1', parc='aparc',
+                                    # regexp="Brodmann",
                                     subjects_dir=subjects_dir)
 
-labels_to_sim = [labels[74], labels[52]]
+labels_to_sim = [labels[16], labels[48]]
 
 ##############################################################################
 # Generate dipole time series
 n_dipoles = 2  # number of dipoles to create
-epoch_duration = 2.  # duration of each epoch/event
+epoch_duration = 1.  # duration of each epoch/event
 n = 0  # harmonic number
 
 
@@ -114,6 +116,7 @@ times = raw_nrm.times[:int(raw_nrm.info['sfreq'] * epoch_duration)]
 
 stc = simulate_sparse_stc(src, times=times, n_dipoles=n_dipoles,
                           data_fun=data_fun,
+                          labels=labels_to_sim,
                           random_state=0)
 
 print stc.data.max()
@@ -126,7 +129,7 @@ fig.show()
 
 ##############################################################################
 # Simulate raw data
-raw_sim = simulate_raw(raw_nrm, stc, trans_fname, src, bem_fname, cov='simple',
+raw_sim = simulate_raw(raw_nrm, stc, trans_nrm, src, bem_fname, cov='simple',
                        iir_filter=[0.2, -0.2, 0.04], ecg=True, blink=True,
                        n_jobs=2, verbose=True)
 raw_sim.plot()
@@ -135,6 +138,6 @@ raw_sim.plot()
 # Plot evoked data
 events = find_events(raw_sim)  # only 1 pos, so event number == 1
 epochs = Epochs(raw_sim, events, 1, -0.2, epoch_duration)
-cov = compute_covariance(epochs, tmax=0., method='auto')  # quick calc
+cov = compute_covariance(epochs, tmax=0., method='auto', return_estimators="all")  # quick calc
 evoked = epochs.average()
 evoked.plot_white(cov)
