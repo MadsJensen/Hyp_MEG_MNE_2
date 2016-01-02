@@ -1,5 +1,4 @@
-"""
-Doc string goes here.
+"""Doc string goes here.
 
 @author: mje mads [] cnru.dk
 """
@@ -29,7 +28,7 @@ os.chdir(data_path)
 
 
 bem = mne.read_bem_solution(subjects_dir + "/subject_1/bem/" +
-                           "subject_1-5120-bem-sol.fif")
+                            "subject_1-5120-bem-sol.fif")
 nrm_fname = data_path + "tone_task-normal-tsss-mc-autobad-ica_raw.fif"
 hyp_fname = data_path + "tone_task-hyp-tsss-mc-autobad-ica_raw.fif"
 
