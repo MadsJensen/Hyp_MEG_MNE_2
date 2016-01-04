@@ -19,17 +19,22 @@ n_jobs = 1
 # Setup paths and prepare raw data
 hostname = socket.gethostname()
 
-if hostname == "Wintermute":
-    basic_path = "/home/mje/mnt/Hyp_meg/scratch/"
+if hostname == "wintermute":
+    data_path = "/home/mje/Projects/MEG_Hyopnosis/data/"
+    subjects_dir = "/home/mje/Projects/MEG_Hyopnosis/data/fs_subjects_dir"
 else:
-    basic_path = "/projects/MINDLAB2013_18-MEG-HypnosisAnarchicHand/" +\
-                "scratch/"
+    data_path = "/projects/" + \
+                "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
+                "scratch/Tone_task_MNE_2/"
+    subjects_dir = "/projects/" + \
+                   "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
+                   "scratch/fs_subjects_dir/"
 
-subjects_dir = basic_path + "fs_subjects_dir/"
-data_path = basic_path + "Tone_task_MNE_ver_2/"
+# CHANGE DIR TO SAVE FILES THE RIGTH PLACE
+os.chdir(data_path)
 
-epochs_fnrm = data_path + "subj_1-nrm-epo.fif"
-epochs_fhyp = data_path + "subj_1-hyp-epo.fif"
+epochs_fnrm = data_path + "subj_1_nrm-epo.fif"
+epochs_fhyp = data_path + "subj_1_hyp-epo.fif"
 inverse_fnrm = data_path + "subj_1-nrm-inv.fif"
 inverse_fhyp = data_path + "subj_1-hyp-inv.fif"
 # change dir to save files the rigth place
@@ -91,26 +96,26 @@ label_ts_hyp = mne.extract_label_time_course(stcs_hyp, labels, src_hyp,
 label_ts_nrm_rescaled = []
 for j in range(len(label_ts_nrm)):
     label_ts_nrm_rescaled += [rescale(label_ts_nrm[j], epochs_nrm.times,
-                                      baseline=(None, -0.7), mode="zscore")]
+                                      baseline=(None, -0.5), mode="zscore")]
 
 label_ts_hyp_rescaled = []
 for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled += [rescale(label_ts_hyp[j], epochs_hyp.times,
-                                      baseline=(None, -0.7), mode="zscore")]
+                                      baseline=(None, -0.5), mode="zscore")]
 
 
-fromTime = np.argmax(stcs_nrm[0].times == -0.5)
-toTime = np.argmax(stcs_nrm[0].times == 0)
+from_time = np.abs(stcs_nrm[0].times + 0).argmin()
+to_time = np.abs(stcs_nrm[0].times - 0.2).argmin()
 
 label_ts_nrm_rescaled_crop = []
 for j in range(len(label_ts_nrm)):
     label_ts_nrm_rescaled_crop +=\
-        [label_ts_nrm_rescaled[j][:, fromTime:toTime]]
+        [label_ts_nrm_rescaled[j][:, from_time:to_time]]
 
 label_ts_hyp_rescaled_crop = []
 for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled_crop +=\
-       [label_ts_hyp_rescaled[j][:, fromTime:toTime]]
+       [label_ts_hyp_rescaled[j][:, from_time:to_time]]
 
 # np.save("labelTsHypToneMean-flipZscore_resample_crop.npy",
 #         label_ts_hyp_rescaled_crop)
