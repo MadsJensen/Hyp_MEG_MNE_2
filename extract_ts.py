@@ -114,7 +114,7 @@ for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled_crop +=\
        [label_ts_hyp_rescaled[j][:, from_time:to_time]]
 
-# np.save("labelTsHypToneMean-flipZscore_resample_crop.npy",
-#         label_ts_hyp_rescaled_crop)
-# np.save("labelTsNrmToneMean-flipZscore_resample_crop.npy",
-#         label_ts_nrm_rescaled_crop)
+np.save(data_path + "Hyp_label_ts_pca-flip_zscore_resample_0_02.npy",
+        label_ts_hyp_rescaled_crop)
+np.save(data_path + "Nrm_label_ts_pca-flip_zscore_resample_0_02.npy",
+        label_ts_nrm_rescaled_crop)
