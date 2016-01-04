@@ -49,11 +49,10 @@ os.chdir(data_path)
 
 # %%
 # load numpy files
-label_ts_hyp_crop =\
-    np.load("labelTsHypPressMean-flipZscore_resample_crop_DKT.npy")
 label_ts_normal_crop =\
-    np.load("labelTsNormalPressMean-flipZscore_resample_crop_DKT.npy")
-
+    np.load(data_path + "Nrm_label_ts_pca-flip_zscore_resample_0_02.npy")
+label_ts_hyp_crop =\
+    np.load(data_path + "Hyp_label_ts_pca-flip_zscore_resample_0_02.npy")
 
 # %%
 # Get labels for FreeSurfer 'aparc' cortical parcellation with 34 labels/hemi
