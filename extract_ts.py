@@ -12,10 +12,6 @@ import socket
 from mne.minimum_norm import (apply_inverse_epochs, read_inverse_operator)
 from mne.baseline import rescale
 
-
-# Settings
-n_jobs = 1
-
 # Setup paths and prepare raw data
 hostname = socket.gethostname()
 
@@ -45,10 +41,11 @@ reject = dict(grad=4000e-13,  # T / m (gradiometers)
               #  eog=250e-6  # uV (EOG channels)
               )
 
-#
+# SETTINGS
 snr = 1.0  # Standard assumption for average data but using it for single trial
 lambda2 = 1.0 / snr ** 2
 method = "MNE"
+n_jobs = 1
 
 # Load data
 inverse_nrm = read_inverse_operator(inverse_fnrm)
