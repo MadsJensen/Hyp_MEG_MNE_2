@@ -1,14 +1,16 @@
 """@author: mje."""
-
-import numpy as np
-import networkx as nx
-import numpy.random as npr
+import cPickle as Pickle
 import os
 import socket
-import mne
 
-from nitime.analysis import MTCoherenceAnalyzer
+import mne
+import networkx as nx
+import numpy as np
+import numpy.random as npr
 from nitime import TimeSeries
+from nitime.analysis import CoherenceAnalyzer
+
+
 # from mne.stats import fdr_correction
 
 
@@ -40,6 +42,7 @@ else:
                 "scratch/Tone_task_MNE_2/"
 
 subjects_dir = data_path + "fs_subjects_dir"
+result_dir = data_path + "results"
 
 # change dir to save files the rigth place
 os.chdir(data_path)
@@ -48,11 +51,10 @@ os.chdir(data_path)
 # %%
 # load numpy files
 label_ts_normal_crop =\
-    np.load(data_path + "Nrm_label_ts_pca-flip_zscore_resample_0_02.npy")
+    np.load(data_path + "Nrm_press_label_ts_pca-flip_zscore_resample_0_05.npy")
 label_ts_hyp_crop =\
-    np.load(data_path + "Hyp_label_ts_pca-flip_zscore_resample_0_02.npy")
+    np.load(data_path + "Hyp_press_label_ts_pca-flip_zscore_resample_0_05.npy")
 
-# %%
 # Get labels for FreeSurfer 'aparc' cortical parcellation with 34 labels/hemi
 labels = mne.read_labels_from_annot('subject_1', parc='PALS_B12_Brodmann',
                                     regexp="Brodmann",
@@ -75,14 +77,14 @@ for j in range(len(label_ts_normal_crop)):
                       sampling_rate=300)  # epochs_normal.info["sfreq"])
     nits.metadata["roi"] = labels_name
 
-    coh_list_nrm += [MTCoherenceAnalyzer(nits)]
+    coh_list_nrm += [CoherenceAnalyzer(nits)]
 
 for j in range(len(label_ts_hyp_crop)):
     nits = TimeSeries(label_ts_hyp_crop[j],
                       sampling_rate=300)  # epochs_normal.info["sfreq"])
     nits.metadata["roi"] = labels_name
 
-    coh_list_hyp += [MTCoherenceAnalyzer(nits)]
+    coh_list_hyp += [CoherenceAnalyzer(nits)]
 
 # Compute a source estimate per frequency band
 bands = dict(theta=[4, 8],
@@ -92,7 +94,7 @@ bands = dict(theta=[4, 8],
              gamma_high=[52, 90])
 
 
-bands = dict(theta=[4, 8])
+bands = dict(beta=[12, 25])
 
 for band in bands.keys():
     print "\n******************"
@@ -180,20 +182,30 @@ for band in bands.keys():
 
     #  for CC
     pval_list_CC = []
-    for ccNumber in range(bin_matrix_hyp.shape[0]):
+    for cc_number in range(bin_matrix_hyp.shape[0]):
 
         post_hyp = np.empty(len(cc_hyp))
         for j in range(len(cc_hyp)):
-            post_hyp[j] = cc_hyp[j][ccNumber]
+            post_hyp[j] = cc_hyp[j][cc_number]
 
         post_normal = np.empty(len(cc_nrm))
         for j in range(len(post_normal)):
-            post_normal[j] = cc_nrm[j][ccNumber]
+            post_normal[j] = cc_nrm[j][cc_number]
 
         pval, observed_diff, diffs = \
             permutation_test(post_hyp, post_normal, 10000, np.mean)
 
-        pval_list_CC += [{'area': labels_name[degree_number],
+        pval_list_CC += [{'area': labels_name[cc_number],
                           'pval': pval,
                           "obsDiff": observed_diff,
                           "diffs": diffs}]
+
+    Pickle.dump(pval_list,
+                open(result_dir +
+                     "/nx_press_%s_deg_zscore_BA_Coh_0-05_resample.p" % band,
+                     "wb"))
+
+    Pickle.dump(pval_list_CC,
+                open(result_dir +
+                     "/nx_press_%s_CC_zscore_BA_Coh_0-05_resample.p" % band,
+                     "wb"))
