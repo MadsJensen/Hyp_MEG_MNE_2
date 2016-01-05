@@ -34,14 +34,12 @@ hostname = socket.gethostname()
 
 if hostname == "wintermute":
     data_path = "/home/mje/Projects/MEG_Hyopnosis/data/"
-    subjects_dir = "/home/mje/Projects/MEG_Hyopnosis/data/fs_subjects_dir"
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
                 "scratch/Tone_task_MNE_2/"
-    subjects_dir = "/projects/" + \
-                   "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                   "scratch/fs_subjects_dir/"
+
+subjects_dir = data_path + "fs_subjects_dir"
 
 # change dir to save files the rigth place
 os.chdir(data_path)
