@@ -54,8 +54,8 @@ inverse_hyp = read_inverse_operator(inverse_fhyp)
 epochs_nrm = mne.read_epochs(epochs_fnrm)
 epochs_hyp = mne.read_epochs(epochs_fhyp)
 
-epochs_nrm = epochs_nrm["button"]
-epochs_hyp = epochs_hyp["button"]
+epochs_nrm = epochs_nrm["Tone"]
+epochs_hyp = epochs_hyp["Tone"]
 
 
 #
@@ -102,7 +102,7 @@ for j in range(len(label_ts_hyp)):
 
 
 from_time = np.abs(stcs_nrm[0].times + 0).argmin()
-to_time = np.abs(stcs_nrm[0].times - 0.5).argmin()
+to_time = np.abs(stcs_nrm[0].times - 0.2).argmin()
 
 label_ts_nrm_rescaled_crop = []
 for j in range(len(label_ts_nrm)):
@@ -114,7 +114,7 @@ for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled_crop +=\
        [label_ts_hyp_rescaled[j][:, from_time:to_time]]
 
-np.save(data_path + "Hyp_press_label_ts_pca-flip_zscore_resample_0_05.npy",
+np.save(data_path + "Hyp_tone_label_ts_pca-flip_zscore_resample_0_02.npy",
         label_ts_hyp_rescaled_crop)
-np.save(data_path + "Nrm_press_label_ts_pca-flip_zscore_resample_0_05.npy",
+np.save(data_path + "Nrm_tone_label_ts_pca-flip_zscore_resample_0_02.npy",
         label_ts_nrm_rescaled_crop)
