@@ -24,7 +24,7 @@ if hostname == "wintermute":
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "scratch/Tone_task_MNE_2/"
+                "scratch/Tone_task_MNE_ver_2/"
 
 subjects_dir = data_path + "fs_subjects_dir"
 result_dir = data_path + "results"
