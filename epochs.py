@@ -8,7 +8,7 @@ import socket
 import numpy as np
 import os
 
-# %%
+
 # Setup paths and prepare raw data
 hostname = socket.gethostname()
 
@@ -18,7 +18,7 @@ if hostname == "Wintermute":
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "scratch/Tone_task_MNE_2/"
+                "scratch/Tone_task_MNE_ver_2/"
     subjects_dir = "/projects/" + \
                    "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
                    "scratch/fs_subjects_dir/"

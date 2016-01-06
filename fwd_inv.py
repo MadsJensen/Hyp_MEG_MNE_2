@@ -18,7 +18,7 @@ if hostname == "Wintermute":
 else:
     data_path = "/projects/" + \
                 "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
-                "scratch/Tone_task_MNE_2/"
+                "scratch/Tone_task_MNE_ver_2/"
     subjects_dir = "/projects/" + \
                    "MINDLAB2013_18-MEG-HypnosisAnarchicHand/" + \
                    "scratch/fs_subjects_dir/"
@@ -40,6 +40,7 @@ hyp_trans = data_path + "hyp2-trans.fif"
 #                              spacing="oct6",
 #                              subjects_dir=subjects_dir,
 #                              n_jobs=2)
+
 src = mne.read_source_spaces(data_path + "subj_1-oct6-src.fif")
 
 fwd_nrm = mne.make_forward_solution(nrm_fname,
