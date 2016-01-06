@@ -34,7 +34,6 @@ labels = mne.read_labels_from_annot('subject_1', parc='PALS_B12_Brodmann',
 # labels = mne.read_labels_from_annot('subject_1', parc='aparc.DKTatlas40',
 #                                    subjects_dir=subjects_dir)
 
-# %%
 bands = ["theta", "alpha", "beta", "gamma_low", "gamma_high"]
 conditions = ["press"]  # , "tone"]
 for band in bands:
@@ -69,7 +68,6 @@ for band in bands:
             print "\nBand: %s" % band
             print result[(result["obsDiff"] != 0)
                          & (result["rejected"] == True)]
-# %%
 
 bands=["theta", "alpha", "beta", "gamma_low", "gamma_high"]
 # bands = ["beta"]
