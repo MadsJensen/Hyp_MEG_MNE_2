@@ -73,11 +73,11 @@ class_cv_results = []
 
 for j in range(estimators):
     bdt = AdaBoostClassifier(algorithm="SAMME.R",
-                         n_estimators=1000)
+                             n_estimators=estimators[j])
     bdt.fit(X, y)
 
     class_cv_results += [cross_val_score(bdt, X, y, cv=10, n_jobs=2,
                                          verbose=False)]
 
-y_pred = bdt.predict(X)
-confusion_matrix(y, y_pred)
+# y_pred = bdt.predict(X)
+# confusion_matrix(y, y_pred)
