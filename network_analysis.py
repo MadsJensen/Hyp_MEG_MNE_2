@@ -104,12 +104,12 @@ for band in bands.keys():
     # extract coherence values
     f_lw, f_up = bands[band]  # lower & upper limit for frequencies
 
-    coh_matrix_nrm = np.empty([len(labels_name),
+    coh_matrix_nrm = np.empty([len(label_ts_normal_crop),
                                len(labels_name),
-                               len(label_ts_normal_crop)])
-    coh_matrix_hyp = np.empty([len(labels_name),
+                               len(labels_name)])
+    coh_matrix_hyp = np.empty([len(label_ts_hyp_crop),
                                len(labels_name),
-                               len(label_ts_hyp_crop)])
+                               len(labels_name)])
 
     # confine analysis to Aplha (8  12 Hz)
     freq_idx = np.where((coh_list_hyp[0].frequencies >= f_lw) *
@@ -118,31 +118,31 @@ for band in bands.keys():
     print coh_list_nrm[0].frequencies[freq_idx]
 
     # compute average coherence &  Averaging on last dimension
-    for j in range(coh_matrix_nrm.shape[2]):
-        coh_matrix_nrm[:, :, j] = np.mean(
+    for j in range(coh_matrix_nrm.shape[0]):
+        coh_matrix_nrm[j, :, :]=np.mean(
             coh_list_nrm[j].coherence[:, :, freq_idx], -1)
 
-    for j in range(coh_matrix_hyp.shape[2]):
-        coh_matrix_hyp[:, :, j] = np.mean(
+    for j in range(coh_matrix_hyp.shape[0]):
+        coh_matrix_hyp[j, :, :]=np.mean(
             coh_list_hyp[j].coherence[:, :, freq_idx], -1)
 
     #
-    fullMatrix = np.concatenate([coh_matrix_nrm, coh_matrix_hyp], axis=2)
+    full_matrix = np.concatenate([coh_matrix_nrm, coh_matrix_hyp], axis=0)
 
-    threshold = np.median(fullMatrix[np.nonzero(fullMatrix)]) + \
-        np.std(fullMatrix[np.nonzero(fullMatrix)])
+    threshold = np.median(full_matrix[np.nonzero(full_matrix)]) + \
+        np.std(full_matrix[np.nonzero(full_matrix)])
 
     bin_matrix_nrm = coh_matrix_nrm > threshold
     bin_matrix_hyp = coh_matrix_hyp > threshold
 
     #
     nx_nrm = []
-    for j in range(bin_matrix_nrm.shape[2]):
-        nx_nrm += [nx.from_numpy_matrix(bin_matrix_nrm[:, :, j])]
+    for j in range(bin_matrix_nrm.shape[0]):
+        nx_nrm += [nx.from_numpy_matrix(bin_matrix_nrm[j, :, :])]
 
     nx_hyp = []
-    for j in range(bin_matrix_hyp.shape[2]):
-        nx_hyp += [nx.from_numpy_matrix(bin_matrix_hyp[:, :, j])]
+    for j in range(bin_matrix_hyp.shape[0]):
+        nx_hyp += [nx.from_numpy_matrix(bin_matrix_hyp[j, :, :])]
 
     #
     degrees_nrm = []
