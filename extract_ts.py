@@ -81,12 +81,12 @@ labels = mne.read_labels_from_annot('subject_1', parc='PALS_B12_Brodmann',
 src_nrm = inverse_nrm['src']
 label_ts_nrm = mne.extract_label_time_course(stcs_nrm, labels,
                                              src_nrm,
-                                             mode='pca_flip',
+                                             mode='mean_flip',
                                              return_generator=False)
 
 src_hyp = inverse_hyp['src']
 label_ts_hyp = mne.extract_label_time_course(stcs_hyp, labels, src_hyp,
-                                             mode='pca_flip',
+                                             mode='mean_flip',
                                              return_generator=False)
 
 # standardize TS's
@@ -114,7 +114,7 @@ for j in range(len(label_ts_hyp)):
     label_ts_hyp_rescaled_crop +=\
        [label_ts_hyp_rescaled[j][:, from_time:to_time]]
 
-np.save(data_path + "Hyp_tone_label_ts_pca-flip_zscore_resample_0_02.npy",
+np.save(data_path + "Hyp_tone_label_ts_mean-flip_zscore_resample_0_02.npy",
         label_ts_hyp_rescaled_crop)
-np.save(data_path + "Nrm_tone_label_ts_pca-flip_zscore_resample_0_02.npy",
+np.save(data_path + "Nrm_tone_label_ts_mean-flip_zscore_resample_0_02.npy",
         label_ts_nrm_rescaled_crop)
